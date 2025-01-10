@@ -1,25 +1,24 @@
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+import os
 
-def preprocess_data(player_stats, opponent_stats):
-    # Convert to DataFrame
-    player_df = pd.DataFrame(player_stats)
-    opponent_df = pd.DataFrame(opponent_stats)
+def preprocess_data():
+    try:
+        # Load data
+        player_stats = pd.read_json("data/player_profile.json")
+        
+        # Example: Extract necessary columns
+        processed_data = pd.json_normalize(player_stats, sep="_")
+        
+        # Save processed data
+        os.makedirs("data", exist_ok=True)
+        processed_data.to_csv("data/processed_data.csv", index=False)
+        print("Processed data saved to data/processed_data.csv")
+    except Exception as e:
+        print(f"Error during preprocessing: {e}")
 
-    # Merge player and opponent data
-    merged_df = pd.merge(player_df, opponent_df, on="team_id")
+if __name__ == "__main__":
+    preprocess_data()
 
-    # Add rolling averages
-    merged_df["avg_points_last_5"] = (
-        player_df.groupby("player_id")["points"].rolling(5).mean().reset_index(drop=True)
-    )
-
-    # Normalize data
-    scaler = StandardScaler()
-    merged_df[["avg_points_last_5", "opponent_def_eff"]] = scaler.fit_transform(
-        merged_df[["avg_points_last_5", "opponent_def_eff"]]
-    )
-    return merged_df
 
 # Example usage:
 # player_stats = pd.read_csv("data/player_stats.csv")

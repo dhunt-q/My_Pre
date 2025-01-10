@@ -37,13 +37,15 @@ def fetch_injury_reports():
         injuries = []
         for team in injury_data['teams']:
             for player in team['players']:
+                # Safely check for the 'injury' key
+                injury = player.get('injury', {})
                 injuries.append({
                     'player_id': player['id'],
                     'player_name': player['full_name'],
                     'team': team['name'],
                     'position': player.get('primary_position', 'N/A'),
-                    'injury': player['injury']['description'],
-                    'status': player['injury']['status'],
+                    'injury': injury.get('description', 'None'),
+                    'status': injury.get('status', 'Healthy'),
                 })
         return pd.DataFrame(injuries)
     else:

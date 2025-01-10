@@ -8,6 +8,7 @@ import os
 def train_model():
     # Load processed data
     data = pd.read_csv("data/processed_data.csv")
+    print(data.head())
 
     # Features and target
     X = data[["avg_points_last_5", "opponent_def_eff", "minutes_played"]]
@@ -32,7 +33,3 @@ def train_model():
 
 if __name__ == "__main__":
     train_model()
-
-
-# Example usage:
-# train_model("data/processed_data.csv", "models/player_stats_model.pkl")

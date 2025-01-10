@@ -1,7 +1,9 @@
+import pandas as pd
 import requests
 import json
 import time
 import os
+from datetime import datetime
 
 API_KEY = "nLmHHrq9xy48tW9T4fMDd6lbO83FjfchuCt4BP6D"
 BASE_URL = "https://api.sportradar.us/nba/trial/v7/en"
